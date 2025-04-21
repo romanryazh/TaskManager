@@ -1,0 +1,17 @@
+﻿bin/
+obj/
+.vs/
+*.user
+*.suo
+*.cache
+
+*.dll
+*.exe
+*.pdb
+*.nupkg
+
+.idea/
+*.swp
+
+*.log
+*.tmp
