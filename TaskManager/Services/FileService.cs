@@ -8,16 +8,16 @@ public class FileService : IFileService
 {
     private const string FilePath = "tasks.json";
 
-    public void SaveTasks(List<TaskItem> tasks)
+    public void SaveTasks(List<TaskItem> tasks, string filePath = "tasks.json")
     {
         var json = JsonSerializer.Serialize(tasks);
-        File.WriteAllText(FilePath, json);
+        File.WriteAllText(filePath, json);
     }
 
-    public List<TaskItem> LoadTasks()
+    public List<TaskItem> LoadTasks(string filePath = "tasks.json")
     {
-        if (!File.Exists(FilePath)) return new List<TaskItem>();
-        var json = File.ReadAllText(FilePath);
+        if (!File.Exists(filePath)) return new List<TaskItem>();
+        var json = File.ReadAllText(filePath);
         return JsonSerializer.Deserialize<List<TaskItem>>(json);
     }
 }

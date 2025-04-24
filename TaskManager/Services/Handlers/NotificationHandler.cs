@@ -1,4 +1,4 @@
-﻿namespace TaskManager.Services;
+﻿namespace TaskManager.Services.Handlers;
 
 public enum NotificationType
 {

@@ -12,9 +12,9 @@ var serviceProvider = services.BuildServiceProvider();
 var taskService = serviceProvider.GetRequiredService<ITaskService>();
 var fileService = serviceProvider.GetRequiredService<IFileService>();
 var ui = serviceProvider.GetRequiredService<ConsoleUIService>();
-
-var tasks = fileService.LoadTasks();
-tasks.ForEach(task => taskService.AddTask(task));
+//
+// var tasks = fileService.LoadTasks();
+// tasks.ForEach(task => taskService.AddTask(task));
 
 ui.ShowMenu();
 

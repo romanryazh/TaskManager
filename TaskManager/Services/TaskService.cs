@@ -5,7 +5,14 @@ namespace TaskManager.Services;
 
 public class TaskService : ITaskService
 {
-    private List<TaskItem> _tasks = new();
+    private readonly List<TaskItem> _tasks;
+    private readonly IFileService _fileService;
+
+    public TaskService(IFileService fileService)
+    {
+        _fileService = fileService;
+        _tasks = _fileService.LoadTasks();
+    }
 
     public void AddTask(TaskItem task) => _tasks.Add(task);
 

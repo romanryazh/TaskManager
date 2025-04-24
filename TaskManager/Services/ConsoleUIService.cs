@@ -1,7 +1,8 @@
-﻿using System.Threading.Channels;
-using TaskManager.Interfaces;
+﻿using TaskManager.Interfaces;
 using TaskManager.Models;
-using TaskManager.Services;
+using TaskManager.Services.Handlers;
+
+namespace TaskManager.Services;
 
 /// <summary>
 /// Сервис консольного меню менеджера задач для отображения элементов управления.
@@ -84,11 +85,6 @@ public class ConsoleUIService
         }
     }
 
-    private void ShowOptions()
-    {
-        
-    }
-
     /// <summary>
     /// Выводит на экран пронумерованный список всех сохранённых задач.
     /// </summary>
@@ -120,7 +116,7 @@ public class ConsoleUIService
             return;
         }
 
-        _taskService.AddTask(new TaskItem() { Title = input });
+        _taskService.AddTask(new TaskItem() { Id = Guid.NewGuid(), Title = input });
         NotificationHandler.ShowMessage(NotificationType.TaskAdded);
         Console.ReadKey();
     }
@@ -155,8 +151,8 @@ public class ConsoleUIService
             Console.ReadKey();
             return;
         }
-
-        _taskService.GetAllTasks().RemoveAt(taskNumber - 1);
+        
+        _taskService.DeleteTask(GetGuidTask(taskNumber));
         NotificationHandler.ShowMessage(NotificationType.TaskRemoved);
         Console.ReadKey();
     }
@@ -193,8 +189,9 @@ public class ConsoleUIService
             return;
         }
         Console.Clear();
-        
-        var title = _taskService.GetAllTasks()[taskNumber - 1].Title;
+
+
+        var title = GetTitleTask(taskNumber);
         Console.WriteLine("Задача:");
         Console.WriteLine(title);
         Console.WriteLine("Введите новое описание задачи:");
@@ -207,7 +204,7 @@ public class ConsoleUIService
             return;
         }
 
-        _taskService.GetAllTasks()[taskNumber - 1].Title = input;
+        _taskService.UpdateTask(GetGuidTask(taskNumber), title);
         NotificationHandler.ShowMessage(NotificationType.TaskUpdated);
         Console.ReadKey();
     }
@@ -222,5 +219,7 @@ public class ConsoleUIService
         _fileService.SaveTasks(_taskService.GetAllTasks());
     }
 
-    private void WaitKey() => Console.ReadKey();
+    private Guid GetGuidTask(int taskNumber) => _taskService.GetAllTasks()[taskNumber - 1].Id;
+    
+    private string? GetTitleTask(int taskNumber) => _taskService.GetAllTasks()[taskNumber - 1].Title;
 }
